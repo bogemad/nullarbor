@@ -521,7 +521,7 @@ info :
   @echo REF: $(REF)
 
 report/index.html : ref.fa.fai yield denovo.tab mlst.tab virulome resistome kraken core.svg distances.tab roary/pan.svg roary/acc.svg
-  nullarbor-report.pl --name $(NAME) --indir . --outdir report
+  nullarbor_it-report.pl --name $(NAME) --indir . --outdir report
 
 publish : report/index.html
   mkdir -p $(PUBLISH_DIR)/$(NAME)
