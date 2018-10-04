@@ -19,12 +19,12 @@ use Term::ANSIColor;
 
 use FindBin;
 use lib "$FindBin::RealBin/../perl5";
-use Nullarbor::IsolateSet;
-use Nullarbor::Logger qw(msg err);
-use Nullarbor::Report;
-use Nullarbor::Requirements qw(require_exe require_perlmod require_version require_var require_file);
-use Nullarbor::Utils qw(num_cpus);
-use Nullarbor::Plugins;
+use Nullarbor_it::IsolateSet;
+use Nullarbor_it::Logger qw(msg err);
+use Nullarbor_it::Report;
+use Nullarbor_it::Requirements qw(require_exe require_perlmod require_version require_var require_file);
+use Nullarbor_it::Utils qw(num_cpus);
+use Nullarbor_it::Plugins;
 
 #-------------------------------------------------------------------
 # constants
@@ -73,7 +73,7 @@ my $annotator = $ENV{'NULLARBOR_ANNOTATOR'} || 'prokka_fast';
 my $annotator_opt = '';
 my $mask = '';
 
-my $plugin = Nullarbor::Plugins->discover();
+my $plugin = Nullarbor_it::Plugins->discover();
 #msg(Dumper($plugin));
 
 @ARGV or usage();
@@ -118,7 +118,7 @@ GetOptions(
 ) 
 or usage();
 
-Nullarbor::Logger->quiet($quiet);
+Nullarbor_it::Logger->quiet($quiet);
 
 msg("Hello", $ENV{USER} || 'stranger');
 msg("This is $EXE $VERSION");
@@ -172,7 +172,7 @@ msg("Using reference genome: $ref");
 
 $input or err("Please specify an dataset with --input <dataset.tab>");
 -r $input or err("Can not read dataset file '$input'");
-my $set = Nullarbor::IsolateSet->new();
+my $set = Nullarbor_it::IsolateSet->new();
 $set->load($input);
 msg("Loaded", $set->num, "isolates:", $set->ids);
 $set->num >= 4 or err("$EXE requires a mininum of 4 isolates to run (due to Roary)");
@@ -242,7 +242,7 @@ my %make;
 
 my $IDFILE = 'isolates.txt';
 my $R1 = "R1.fq.gz";
-my $R2 = "R2.fq.gz";
+# my $R2 = "R2.fq.gz";
 
 my @CMDLINE_NO_FORCE = grep !m/^--?f\S*$/, @CMDLINE; # remove --force / -f etc
 $make{'again'} = {
@@ -259,8 +259,8 @@ for my $s ($set->isolates) {
   $s->folder($dir);
   my $id = $s->id;
   my @reads = @{$s->reads};
-  @reads != 2 and err("Sample '$id' only has 1 read, need 2 (paired).");
-  my @clipped = ("$id/$R1", "$id/$R2");
+  @reads != 1 and err("Sample '$id' has more than 1 read, use the original nullarbor pipeline for paired reads.");
+  my @clipped = ("$id/$R1");
   print ISOLATES "$id\n";
 
   # Solve a lot of issues by just making the paths here instead of the makefile!
@@ -268,15 +268,15 @@ for my $s ($set->isolates) {
 
   $make{$clipped[0]} = {
     DEP => [ @reads ],  # FIXME: should this be '|' ?
-    CMD => $trim ? [ "trimmomatic PE -threads \$(CPUS) -phred33 @reads $id/$R1 /dev/null $id/$R2 /dev/null ".($cfg->{trimmomatic} || '') ]
-                 : [ "ln -f -s '$reads[0]' '$id/$R1'", "ln -f -s '$reads[1]' '$id/$R2'" ],
+    CMD => $trim ? [ "trimmomatic SE -threads \$(CPUS) -phred33 @reads $id/$R1 ".($cfg->{trimmomatic} || '') ]
+                 : [ "ln -f -s '$reads[0]' '$id/$R1'" ],
   };
   
   # we need this special rule to handle the 'double dependency' problem
   # http://www.gnu.org/software/automake/manual/html_node/Multiple-Outputs.html#Multiple-Outputs
-  $make{$clipped[1]} = { 
-    DEP => [ $clipped[0] ],
-  };
+  # $make{$clipped[1]} = { 
+    # DEP => [ $clipped[0] ],
+  # };
   
 }
 close ISOLATES;
@@ -310,7 +310,7 @@ if ($prefill) {
 #.............................................................................
 # start the log file
 msg("Saving $outdir/$LOGFILE");
-Nullarbor::Logger->save_log(">>$outdir/$LOGFILE");
+Nullarbor_it::Logger->save_log(">>$outdir/$LOGFILE");
 
 #.............................................................................
 
@@ -404,7 +404,7 @@ sub usage {
   print "REQUIRED\n";
   print "  --name STR             Job name\n";
   print "  --ref FILE             Reference file in FASTA or GBK format\n";
-  print "  --input FILE           Input TSV file with format:  | Isolate_ID | R1.fq.gz | R2.fq.gz |\n";
+  print "  --input FILE           Input TSV file with format:  | Isolate_ID | reads.fq.gz |\n";
   print "  --outdir DIR           Output folder\n";
   print "OPTIONS\n";
   print "  --cpus INT             Maximum number of CPUs to use in total ($cpus)\n";
@@ -548,8 +548,8 @@ denovo.tab : $(CONTIGS)
 distances.tab : core.aln
   snp-dists -b $< > $@
 
-%/snps.vcf : $(REF) %/R1.fq.gz %/R2.fq.gz
-  $(SNIPPY) --cpus $(CPUS) --outdir $(@D)/snippy --ref $(word 1,$^) --R1 $(word 2,$^) --R2 $(word 3,$^)
+%/snps.vcf : $(REF) %/R1.fq.gz
+  $(SNIPPY) --cpus $(CPUS) --outdir $(@D)/snippy --ref $(word 1,$^) --se $(word 2,$^)
   cp -vf $(@D)/snippy/snps.{tab,aligned.fa,raw.vcf,vcf,bam,bam.bai,log} $(@D)/
   rm -fr $(@D)/snippy
 
@@ -572,16 +572,16 @@ roary/pan.svg : roary/gene_presence_absence.csv
 roary/acc.svg : roary/accessory_binary_genes.fa.newick
   $(NW_DISPLAY) $< > $@
 
-%/kraken.tab : %/R1.fq.gz %/R2.fq.gz
-  read1="$(word 1,$^)" read2="$(word 2,$^)" outfile="$@" $(TAXONER)
+%/kraken.tab : %/R1.fq.gz
+  read1="$(word 1,$^)" outfile="$@" $(TAXONER)
 
 %/contigs.gff: %/contigs.fa
   gffout="$(@)" gbkout="$(@D)/contigs.gbk" contigs="$(<)" locustag="$(@D)" gcode="$(GCODE)" minlen="$(MIN_CTG_LEN)" $(ANNOTATOR)
 
-%/contigs.fa : %/R1.fq.gz %/R2.fq.gz
-  read1="$(word 1,$^)" read2="$(word 2,$^)" outdir="$(@D)" $(ASSEMBLER)
+%/contigs.fa : %/R1.fq.gz
+  read1="$(word 1,$^)" outdir="$(@D)" $(ASSEMBLER)
 
-%/yield.tab : %/R1.fq.gz %/R2.fq.gz
+%/yield.tab : %/R1.fq.gz
   fq --quiet --ref $(FASTAREF) $^ > $@
 
 %/resistome.tab : %/contigs.fa
@@ -590,7 +590,7 @@ roary/acc.svg : roary/accessory_binary_genes.fa.newick
 %/virulome.tab : %/contigs.fa
   $(ABRICATE) --db $(VIRULOME_DB) $^ > $@
 
-%/sketch.msh : %/R1.fq.gz %/R2.fq.gz
+%/sketch.msh : %/R1.fq.gz
   $(MASH) -o $(basename $@) $<
 
 %.svg : %.newick

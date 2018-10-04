@@ -1,8 +1,8 @@
-package Nullarbor::Module::seqdata;
+package Nullarbor_it::Module::seqdata;
 use Moo;
-extends 'Nullarbor::Module';
+extends 'Nullarbor_it::Module';
 
-use Nullarbor::Logger qw(msg err);
+use Nullarbor_it::Logger qw(msg err);
 use Data::Dumper;
 
 #...........................................................................................
@@ -28,7 +28,7 @@ sub html {
     my $infile = "$indir/$id/yield.tab";
     -r $infile or err("Missing file: $infile");
     -s $infile or err("Empty file: $infile\nTry 'find $indir -size 0 -delete' first");
-    my $t = Nullarbor::Tabular::load(-file=>$infile, -sep=>"\t");
+    my $t = Nullarbor_it::Tabular::load(-file=>$infile, -sep=>"\t");
     if ($first) {
       # make the headings for the table
       $t->[0][0] = 'Isolate';

@@ -1,6 +1,6 @@
-package Nullarbor::Module::serotype;
+package Nullarbor_it::Module::serotype;
 use Moo;
-extends 'Nullarbor::Module';
+extends 'Nullarbor_it::Module';
 
 use List::Util qw(sum);
 
@@ -19,7 +19,7 @@ sub html {
   my $fn = "$indir/serotype.tab"; 
   return unless -r $fn;
 
-  my $tab = Nullarbor::Tabular::load(-file=>$fn, -sep=>"\t", -header=>1);
+  my $tab = Nullarbor_it::Tabular::load(-file=>$fn, -sep=>"\t", -header=>1);
 
   $tab->[0][0] = 'Isolate';
   map { $_->[0] =~ s{/contigs.fa}{} } @$tab;

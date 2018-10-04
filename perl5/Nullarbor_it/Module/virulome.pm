@@ -1,6 +1,6 @@
-package Nullarbor::Module::resistome;
+package Nullarbor_it::Module::virulome;
 use Moo;
-extends 'Nullarbor::Module';
+extends 'Nullarbor_it::Module';
 
 use Data::Dumper;
 use Bio::SeqIO;
@@ -8,12 +8,11 @@ use Bio::SeqIO;
 #...........................................................................................
 
 my $MIN_COV = 95;
-my $MIN_ID  = 0;
 
 #...........................................................................................
 
 sub name {
-  return "Resistome";
+  return "Virulome";
 }
 
 #...........................................................................................
@@ -25,8 +24,7 @@ sub html {
 
   my %abr;
   for my $id (@id) {
-    my $infile = "$indir/$id/resistome.tab";
-    $abr{$id} = Nullarbor::Tabular::load(-file=>$infile, -sep=>"\t", -header=>1, -key=>4); # 4 = "GENE"
+    $abr{$id} = Nullarbor_it::Tabular::load(-file=>"$indir/$id/virulome.tab", -sep=>"\t", -header=>1, -key=>4); # 4 = "GENE"
   }
 #  print STDERR Dumper(\%abr);
 
@@ -46,7 +44,7 @@ sub html {
       my $hit2 = $ABSENT;
       if ($abr{$id}{$g}) {
         my @hits = @{ $abr{$id}{$g} };
-        $hit = @hits == 1 && int($hits[0]->{'%COVERAGE'}) >= $MIN_COV && int($hits[0]->{'%IDENTITY'}) >= $MIN_ID
+        $hit = @hits == 1 && int($hits[0]->{'%COVERAGE'}) >= $MIN_COV
              ? $self->pass_fail( +1 ) 
              : $self->pass_fail( 0, join(' + ', map { int($_->{'%COVERAGE'}).'%' } @hits) );
 #          $hit = join("+", 
@@ -69,7 +67,7 @@ sub html {
     $grid[0][$i] = "<DIV CLASS='vertical'>$grid[0][$i]</DIV>";
   }
   
-  return $self->table_legend("&ge;${MIN_COV}% coverage", "<${MIN_COV}% coverage", "absent") 
+  return $self->table_legend("&ge;${MIN_COV}% coverage", "<${MIN_COV}% coverage", "$ABSENT absent") 
         .$self->matrix_to_html(\@grid);
 }
 

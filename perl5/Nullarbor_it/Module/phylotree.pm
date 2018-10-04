@@ -1,6 +1,6 @@
-package Nullarbor::Module::phylotree;
+package Nullarbor_it::Module::phylotree;
 use Moo;
-extends 'Nullarbor::Module';
+extends 'Nullarbor_it::Module';
 
 use Data::Dumper;
 use Bio::SeqIO;
@@ -20,13 +20,13 @@ sub html {
   my $indir = $self->indir;
 
   my %ST_of;
-  my $mlst = Nullarbor::Tabular::load(-file=>"$indir/report/mlst.csv", -sep=>",", -header=>1);  
+  my $mlst = Nullarbor_it::Tabular::load(-file=>"$indir/report/mlst.csv", -sep=>",", -header=>1);  
   for my $row (@$mlst) {
     $ST_of{ $row->[0] } = $row->[2];
   }
 
   my %AMR_of;
-  my $amr = Nullarbor::Tabular::load(-file=>"$indir/report/resistome.csv", -sep=>",", -header=>1);
+  my $amr = Nullarbor_it::Tabular::load(-file=>"$indir/report/resistome.csv", -sep=>",", -header=>1);
   for my $row (@$amr) {
     $AMR_of{ $row->[0] } = $row->[1];
   }

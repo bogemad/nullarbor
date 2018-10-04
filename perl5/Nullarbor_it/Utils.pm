@@ -1,4 +1,4 @@
-package Nullarbor::Utils;
+package Nullarbor_it::Utils;
 
 use base Exporter;
 @EXPORT_OK = qw(num_cpus);

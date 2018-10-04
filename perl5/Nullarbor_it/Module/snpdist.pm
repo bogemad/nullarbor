@@ -1,6 +1,6 @@
-package Nullarbor::Module::snpdist;
+package Nullarbor_it::Module::snpdist;
 use Moo;
-extends 'Nullarbor::Module';
+extends 'Nullarbor_it::Module';
 
 use List::Util qw(min max);
 
@@ -15,7 +15,7 @@ sub name {
 sub html {
   my($self) = @_;
   
-  my $matrix = Nullarbor::Tabular::load(-file=>$self->indir."/distances.tab", -sep=>"\t");
+  my $matrix = Nullarbor_it::Tabular::load(-file=>$self->indir."/distances.tab", -sep=>"\t");
   
   # want to use vertical layout for labels across
   for my $i ( 1 .. $#{$matrix->[0]} ) {

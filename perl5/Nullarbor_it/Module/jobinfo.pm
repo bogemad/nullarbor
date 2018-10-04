@@ -1,6 +1,6 @@
-package Nullarbor::Module::jobinfo;
+package Nullarbor_it::Module::jobinfo;
 use Moo;
-extends 'Nullarbor::Module';
+extends 'Nullarbor_it::Module';
 
 use Sys::Hostname;
 

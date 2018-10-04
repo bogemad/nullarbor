@@ -1,6 +1,6 @@
-package Nullarbor::Module::mlst;
+package Nullarbor_it::Module::mlst;
 use Moo;
-extends 'Nullarbor::Module';
+extends 'Nullarbor_it::Module';
 
 use Data::Dumper;
 use List::Util qw(sum max min);
@@ -29,7 +29,7 @@ sub html {
 
 # LEGACY
 if (0) {
-  my $mlst = Nullarbor::Tabular::load(-file=>"$indir/mlst.tab", -sep=>"\t", -header=>1);
+  my $mlst = Nullarbor_it::Tabular::load(-file=>"$indir/mlst.tab", -sep=>"\t", -header=>1);
 #  print STDERR Dumper($mlst);
   
   for my $row (@$mlst) {
@@ -49,7 +49,7 @@ if (0) {
   #...........................................................................................
   # MLST
   
-  my $mlst2 = Nullarbor::Tabular::load(-file=>"$indir/mlst.tab", -sep=>"\t", -header=>0);
+  my $mlst2 = Nullarbor_it::Tabular::load(-file=>"$indir/mlst.tab", -sep=>"\t", -header=>0);
 
   # find maximum width (#columns) amongst the rows  
   my $width = max( map { scalar(@$_) } @$mlst2 );

@@ -1,10 +1,10 @@
-package Nullarbor::Plugins;
+package Nullarbor_it::Plugins;
 
 use base Exporter;
 @EXPORT_OK = qw();
 
 use Data::Dumper;
-use Nullarbor::Logger qw(msg err);
+use Nullarbor_it::Logger qw(msg err);
 
 my $RUNNER_DIR = "$FindBin::RealBin/../plugins";
 my $IGNORE = "common.inc";

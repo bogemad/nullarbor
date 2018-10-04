@@ -1,50 +1,7 @@
-package Nullarbor::Module::reference;
-use Moo;
-extends 'Nullarbor::Module';
-
-use Data::Dumper;
-use Bio::SeqIO;
-
-#...........................................................................................
-
-sub name {
-  return "Reference genome";
-}
-
-#...........................................................................................
-
-sub html {
-  my($self) = @_;
-  my $indir = $self->indir;
-  
-  my $fin = Bio::SeqIO->new(-file=>"$indir/ref.fa", -format=>'fasta');
-  my $refsize;
-  my @ref;
-  push @ref, [ qw(Sequence Length Description) ];
-  while (my $seq = $fin->next_seq) {
-    my $id = $seq->id;
-    $id =~ s/\|/~/g;
-    push @ref, [ $id, $seq->length, ($seq->desc || 'no description') ];
-    $refsize += $seq->length;
-  }
-#  print STDERR Dumper($r, \@ref);
-  my $ncontig = scalar @ref;
-  if ($ncontig < 10) {
-    print  $fh table_to_markdown(\@ref, 1);
-  }
-  else {
-    print $fh "\n_Reference sequence names not shown as too many contigs ($ncontig)\n";
-  }
-
-#...........................................................................................
-
-1;
-
-__DATA__
-package Nullarbor::Report;
+package Nullarbor_it::Report;
 use Moo;
 
-use Nullarbor::Logger qw(msg err);
+use Nullarbor_it::Logger qw(msg err);
 use Data::Dumper;
 use File::Copy;
 use Bio::SeqIO;
@@ -67,7 +24,7 @@ sub generate {
 
   msg("Generating $name report in: $outdir");
   open my $fh, '>', "$outdir/index.md";
-  copy("$FindBin::Bin/../conf/nullarbor.css", "$outdir/");  
+  copy("$FindBin::RealBin/../conf/nullarbor.css", "$outdir/");  
 
   #...........................................................................................
   # Load isolate list

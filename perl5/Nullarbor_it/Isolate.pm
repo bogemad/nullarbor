@@ -1,4 +1,4 @@
-package Nullarbor::Isolate;
+package Nullarbor_it::Isolate;
 use Moo;
 
 #.................................................................................

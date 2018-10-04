@@ -1,6 +1,6 @@
-package Nullarbor::Module::identification;
+package Nullarbor_it::Module::identification;
 use Moo;
-extends 'Nullarbor::Module';
+extends 'Nullarbor_it::Module';
 
 #...........................................................................................
 
@@ -39,7 +39,7 @@ sub html {
   my @spec;
   push @spec, [ 'Isolate', (map { ("#$_ Match", "%") } (1.. $NM)), "Quality" ];
   for my $id (@{$self->isolates}) {
-    my $t = Nullarbor::Tabular::load(-file=>$self->indir."/$id/kraken.tab", -sep=>"\t");
+    my $t = Nullarbor_it::Tabular::load(-file=>$self->indir."/$id/kraken.tab", -sep=>"\t");
     # sort by proportion
     map { $_->[0] =~ s/%$// } @$t; # remove % sign kraken1 = 'xx.xx', kraken2 = 'xx.xx%'
     my @s = sort { $b->[0] <=> $a->[0] } (grep { $_->[3] =~ m/^[US]$/ } @$t);

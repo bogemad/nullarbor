@@ -6,6 +6,6 @@ base="$( cd "$( dirname "$0" )" && pwd )"
 
 # will use $KRAKEN_DEFAULT_DB
 
-kraken --threads "$cpus" --paired "$read1" "$read2" \
+kraken --threads "$cpus" "$read1" \
 	| kraken-report \
 	> "$outfile"

@@ -1,8 +1,8 @@
-package Nullarbor::Module::core;
+package Nullarbor_it::Module::core;
 use Moo;
-extends 'Nullarbor::Module';
+extends 'Nullarbor_it::Module';
 
-use Nullarbor::Tabular;
+use Nullarbor_it::Tabular;
 use Data::Dumper;
 use List::Util qw(sum);
 
@@ -22,7 +22,7 @@ sub name {
 sub html {
   my($self) = @_;
   
-  my $core = Nullarbor::Tabular::load(-file=>$self->indir."/core.txt", -sep=>"\t");
+  my $core = Nullarbor_it::Tabular::load(-file=>$self->indir."/core.txt", -sep=>"\t");
   $core->[0][0] = 'Isolate';
   push @{$core->[0]}, '%Used', 'Quality';
 

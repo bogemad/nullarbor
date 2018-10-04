@@ -1,6 +1,6 @@
-package Nullarbor::Module::reference;
+package Nullarbor_it::Module::reference;
 use Moo;
-extends 'Nullarbor::Module';
+extends 'Nullarbor_it::Module';
 
 use Data::Dumper;
 use Bio::SeqIO;

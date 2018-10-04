@@ -1,9 +1,9 @@
-package Nullarbor::Tabular;
+package Nullarbor_it::Tabular;
 
 use base Exporter;
 #@EXPORT_OK = qw(load_as_hash);
 
-use Nullarbor::Logger qw(msg err);
+use Nullarbor_it::Logger qw(msg err);
 use List::Util qw(sum min max);
 use Data::Dumper;
 

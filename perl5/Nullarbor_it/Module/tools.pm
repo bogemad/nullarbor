@@ -1,6 +1,6 @@
-package Nullarbor::Module::tools;
+package Nullarbor_it::Module::tools;
 use Moo;
-extends 'Nullarbor::Module';
+extends 'Nullarbor_it::Module';
 
 use Data::Dumper;
 use Bio::SeqIO;
@@ -9,7 +9,7 @@ use Bio::SeqIO;
 # shell snippet to extract version on FIRST line of output (stderr or stdout ook)
 
 my %getver = (
-  'Nullarbor' => 'nullarbor.pl --version',
+  'Nullarbor_it' => 'nullarbor_it.pl --version',
   'MLST' => 'mlst --version',
   'Abricate' => 'abricate --version',
   'Snippy' => 'snippy --version',

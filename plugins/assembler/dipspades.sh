@@ -13,7 +13,7 @@ echo "# $WORKDIR"
 
 # it does not have a --force option
 OUTDIR="$WORKDIR/dipspades"
-dipspades.py -o "$OUTDIR" -1 "$read1" -2 "$read2" -t "$cpus" $opts
+dipspades.py --iontorrent -k 21,33,55,77,99,127 -o "$OUTDIR" -s "$read1" -t "$cpus" $opts
 
 # dipspades creates 2 subfolders - we just take the 'consensus contigs'
 cp -v -f "$OUTDIR/dipspades/consensus_contigs.fasta" "$outdir/contigs.fa"

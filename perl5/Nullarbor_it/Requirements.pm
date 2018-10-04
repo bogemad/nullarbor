@@ -1,10 +1,10 @@
-package Nullarbor::Requirements;
+package Nullarbor_it::Requirements;
 
 use base Exporter;
 @EXPORT_OK = qw(require_exe require_perlmod require_version require_var require_file);
 
 use File::Spec;
-use Nullarbor::Logger qw(err msg);
+use Nullarbor_it::Logger qw(err msg);
 use strict;
 
 #----------------------------------------------------------------------

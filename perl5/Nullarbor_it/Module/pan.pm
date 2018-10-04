@@ -1,6 +1,6 @@
-package Nullarbor::Module::pan;
+package Nullarbor_it::Module::pan;
 use Moo;
-extends 'Nullarbor::Module';
+extends 'Nullarbor_it::Module';
 
 use File::Copy;
 
@@ -38,7 +38,7 @@ sub html {
   my $svg1 = $self->load_svg($pan_svg);
   $html .= "<p class='container-fluid'>\n$svg1\n</p>\n";
   
-  my $ss = Nullarbor::Tabular::load(-file=>$pan_ss, -sep=>"\t");
+  my $ss = Nullarbor_it::Tabular::load(-file=>$pan_ss, -sep=>"\t");
   unshift @$ss, [ "Ortholog class", "Definition", "Count" ];
   $html .= $self->matrix_to_html($ss, 1);
 

@@ -6,7 +6,7 @@ base="$( cd "$( dirname "$0" )" && pwd )"
 
 # will use $KRAKEN_DEFAULT_DB
 
-kraken2 --threads "$cpus" --paired "$read1" "$read2" \
+kraken2 --threads "$cpus" "$read1" \
 	--memory-mapping --minimum-base-quality 13 \
 	--output - --report "$outfile"
 

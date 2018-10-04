@@ -1,8 +1,8 @@
-package Nullarbor::IsolateSet;
+package Nullarbor_it::IsolateSet;
 use Moo;
 use Cwd qw(abs_path);
-use Nullarbor::Isolate;
-use Nullarbor::Logger qw(msg err);
+use Nullarbor_it::Isolate;
+use Nullarbor_it::Logger qw(msg err);
 
 #.................................................................................
 
@@ -55,7 +55,7 @@ sub load {
 
     # warn if not in TSV format
     my $ntabs = $line =~ tr/\t/\t/;
-    $ntabs < 2 and err("Input line isn't tab-separated?\n$line");
+    $ntabs < 1 and err("Input line isn't tab-separated?\n$line");
 
     # parse the isolate line
     my($id, @reads) = split m/\t/, $line;
@@ -75,7 +75,7 @@ sub load {
     if (@reads==2) {
       $reads[0] eq $reads[1] and err("$id: R1 and R2 are same file: $reads[0]");
     }
-    my $isolate = Nullarbor::Isolate->new( id=>$id, reads=>[ @reads ]);
+    my $isolate = Nullarbor_it::Isolate->new( id=>$id, reads=>[ @reads ]);
     $set{$id} = $isolate;
   }
   close ISOLATES;

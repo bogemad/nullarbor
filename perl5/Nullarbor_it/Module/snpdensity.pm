@@ -1,6 +1,6 @@
-package Nullarbor::Module::snpdensity;
+package Nullarbor_it::Module::snpdensity;
 use Moo;
-extends 'Nullarbor::Module';
+extends 'Nullarbor_it::Module';
 
 use List::Util qw(min max sum);
 
@@ -15,7 +15,7 @@ sub name {
 sub html {
   my($self) = @_;
   
-  my $matrix = Nullarbor::Tabular::load(-file=>$self->indir."/core.tab", -sep=>"\t");
+  my $matrix = Nullarbor_it::Tabular::load(-file=>$self->indir."/core.tab", -sep=>"\t");
   my $fai = load_fai($self->indir."/ref.fa.fai");
 
   my %offset;

@@ -1,4 +1,4 @@
-package Nullarbor::Logger;
+package Nullarbor_it::Logger;
 
 use base Exporter;
 @EXPORT_OK = qw(msg err wrn);

@@ -17,8 +17,8 @@ use File::Copy;
 
 use FindBin;
 use lib "$FindBin::RealBin/../perl5";
-use Nullarbor::Logger qw(msg err);
-use Nullarbor::Module;
+use Nullarbor_it::Logger qw(msg err);
+use Nullarbor_it::Module;
 
 #-------------------------------------------------------------------
 # constants
@@ -54,7 +54,7 @@ or usage();
 #.................................................................................
 # process parameters
 
-Nullarbor::Logger->quiet($quiet);
+Nullarbor_it::Logger->quiet($quiet);
 
 msg("Hello", $ENV{USER} || 'stranger');
 msg("This is $EXE $VERSION");
@@ -95,7 +95,7 @@ my @section = qw(jobinfo seqdata identification mlst serotype resistome virulome
 
 for my $section (@section) {
   msg("Generating: $section");
-  my $modname = "Nullarbor::Module::$section";
+  my $modname = "Nullarbor_it::Module::$section";
   load $modname;
   my $module = $modname->new(indir=>$indir, outdir=>$outdir, id=>$section, report=>$name, isolates=>\@ids);
   my $result = $module->html;

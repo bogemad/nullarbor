@@ -1,8 +1,8 @@
-package Nullarbor::Module;
+package Nullarbor_it::Module;
 use Moo;
 
-use Nullarbor::Logger qw(msg err);
-use Nullarbor::Tabular;
+use Nullarbor_it::Logger qw(msg err);
+use Nullarbor_it::Tabular;
 use File::Copy;
 use Data::Dumper;
 use Path::Tiny;

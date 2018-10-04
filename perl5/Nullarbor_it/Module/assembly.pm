@@ -1,6 +1,6 @@
-package Nullarbor::Module::assembly;
+package Nullarbor_it::Module::assembly;
 use Moo;
-extends 'Nullarbor::Module';
+extends 'Nullarbor_it::Module';
 
 #...........................................................................................
 
@@ -52,7 +52,7 @@ sub html {
   my($self) = @_;
   my $indir = $self->indir;
 
-  my $ass = Nullarbor::Tabular::load(-file=>"$indir/denovo.tab", -sep=>"\t", -header=>1);
+  my $ass = Nullarbor_it::Tabular::load(-file=>"$indir/denovo.tab", -sep=>"\t", -header=>1);
   $ass->[0][0] = 'Isolate';
   $ass->[0][1] = 'Contigs';
   map { $_->[0] =~ s{/contigs.fa}{} } @$ass;
@@ -63,8 +63,8 @@ sub html {
   push @{$ass->[0]}, @annofeat;
   push @{$ass->[0]}, "Quality";
 
-  my $mean_ctgs = Nullarbor::Tabular::column_average($ass, 1, "%d");
-  my $mean_bp = Nullarbor::Tabular::column_average($ass, 2, "%d");
+  my $mean_ctgs = Nullarbor_it::Tabular::column_average($ass, 1, "%d");
+  my $mean_bp = Nullarbor_it::Tabular::column_average($ass, 2, "%d");
   
   for my $row (1 .. @$ass-1) {
     my $id = $ass->[$row][0];
@@ -74,7 +74,7 @@ sub html {
     # embed prokka results in table
     my $prokka = "$indir/$id/prokka/$id";
     if (-r "$prokka.txt") {   # version 1.x
-      my %anno = (map { ($_->[0] => $_->[1]) } @{ Nullarbor::Tabular::load(-file=>"$prokka.txt", -sep=>': ') } );
+      my %anno = (map { ($_->[0] => $_->[1]) } @{ Nullarbor_it::Tabular::load(-file=>"$prokka.txt", -sep=>': ') } );
       push @{ $ass->[$row] }, (map { $anno{$_} } @annofeat);
     }
     elsif (-r "$id/contigs.gff") {   # version 2.x

@@ -9,6 +9,6 @@ if [[ $read1 =~ gz$ ]]; then
     gzipped="--gz"
 fi
 
-skesa --use_paired_ends $gzipped --fastq "$read1,$read2" \
+skesa $gzipped --fastq "$read1" \
 	--cores "$cpus" --memory 16 $opts \
 	--contigs_out "$outdir/contigs.fa"

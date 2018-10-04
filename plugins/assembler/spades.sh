@@ -11,7 +11,7 @@ echo "# $WORKDIR"
 
 # it does not have a --force option
 OUTDIR="$WORKDIR/spades"
-spades.py -m 32 -o "$OUTDIR" --pe1-1 "$read1" --pe1-2 "$read2" -t "$cpus" --careful $opts
+spades.py --iontorrent -k 21,33,55,77,99,127 -m 32 -o "$OUTDIR" -s "$read1" -t "$cpus" --careful $opts
 
 cp -v -f "$OUTDIR/scaffolds.fasta" "$outdir/contigs.fa"
 cp -v -f "$OUTDIR/assembly_graph_with_scaffolds.gfa" "$outdir/contigs.gfa"
